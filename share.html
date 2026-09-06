@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公开资源分享 - 小猪猪教育数字资源库</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="share-container">
+        <header class="share-header">
+            <div class="logo">
+                <i class="fas fa-piggy-bank"></i>
+                <span>小猪猪教育数字资源库 - 公开资源分享</span>
+            </div>
+            <a href="index.html" class="btn btn-outline btn-sm">登录/注册</a>
+        </header>
+
+        <!-- 公告横幅 -->
+        <div id="announcement-banner" class="announcement-banner">
+            <div class="banner-content"></div>
+            <button class="banner-close" onclick="closeBanner()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <main class="share-main">
+            <div class="page-header">
+                <h2><i class="fas fa-share-alt"></i> Every-day-Share 资源</h2>
+            </div>
+
+            <div class="file-tabs">
+                <button class="file-tab active" data-source="all" onclick="switchFileSource('all')">全部</button>
+                <button class="file-tab" data-source="repo" onclick="switchFileSource('repo')">仓库文件</button>
+                <button class="file-tab" data-source="release" onclick="switchFileSource('release')">Release附件</button>
+            </div>
+
+            <div class="file-list" id="share-file-list"></div>
+
+            <div class="releases-section">
+                <h3><i class="fas fa-tag"></i> Releases</h3>
+                <div id="share-releases-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 预览弹窗 -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content viewer-content">
+            <div class="modal-header">
+                <h3 id="preview-title"></h3>
+                <button class="modal-close" onclick="closePreview()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="preview-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/config.js"></script>
+    <script src="assets/init.js"></script>
+    <script src="assets/storage.js"></script>
+    <script src="assets/github-api.js"></script>
+    <script src="assets/share.js"></script>
+</body>
+</html>

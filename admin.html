@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 - 小猪猪教育数字资源库</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 密码验证页 -->
+    <div id="admin-auth" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-shield-alt fa-3x"></i>
+                <h1>管理后台</h1>
+                <p>请输入管理密码</p>
+            </div>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> 管理密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理密码" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> 进入管理后台
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 管理后台主界面 -->
+    <div id="admin-app" class="admin-container" style="display:none;">
+        <!-- 侧边栏 -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <i class="fas fa-piggy-bank"></i>
+                <span>管理后台</span>
+            </div>
+            <nav class="admin-nav">
+                <a href="#" class="admin-nav-item active" data-page="token" onclick="switchAdminPage('token')">
+                    <i class="fab fa-github"></i> <span>GitHub Token</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="files" onclick="switchAdminPage('files')">
+                    <i class="fas fa-folder"></i> <span>主仓库文件</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="share-files" onclick="switchAdminPage('share-files')">
+                    <i class="fas fa-share-alt"></i> <span>分享仓库文件</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="issues" onclick="switchAdminPage('issues')">
+                    <i class="fas fa-exclamation-circle"></i> <span>Issue管理</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="users" onclick="switchAdminPage('users')">
+                    <i class="fas fa-users-cog"></i> <span>用户权限</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="packages" onclick="switchAdminPage('packages')">
+                    <i class="fas fa-box"></i> <span>套餐管理</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="coupons" onclick="switchAdminPage('coupons')">
+                    <i class="fas fa-ticket-alt"></i> <span>优惠券</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="approvals" onclick="switchAdminPage('approvals')">
+                    <i class="fas fa-check-circle"></i> <span>订单审批</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="orders" onclick="switchAdminPage('orders')">
+                    <i class="fas fa-receipt"></i> <span>订单记录</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="quotas" onclick="switchAdminPage('quotas')">
+                    <i class="fas fa-chart-pie"></i> <span>用户额度</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="refunds" onclick="switchAdminPage('refunds')">
+                    <i class="fas fa-undo"></i> <span>退款审批</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="announcements" onclick="switchAdminPage('announcements')">
+                    <i class="fas fa-bullhorn"></i> <span>公告管理</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="traffic" onclick="switchAdminPage('traffic')">
+                    <i class="fas fa-chart-line"></i> <span>流量统计</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-page="visitors" onclick="switchAdminPage('visitors')">
+                    <i class="fas fa-eye"></i> <span>访问统计</span>
+                </a>
+            </nav>
+            <div class="admin-footer">
+                <a href="index.html"><i class="fas fa-arrow-left"></i> 返回前台</a>
+                <button class="btn btn-outline btn-sm" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> 退出</button>
+            </div>
+        </aside>
+
+        <!-- 主内容 -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 id="admin-page-title">GitHub Token 配置</h1>
+            </header>
+
+            <div class="admin-content">
+                <!-- Token 配置 -->
+                <div id="admin-page-token" class="admin-page active">
+                    <div class="card">
+                        <h3>GitHub 个人访问令牌</h3>
+                        <div class="form-group">
+                            <label>Token</label>
+                            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveToken()">保存</button>
+                    </div>
+                    <div class="card">
+                        <h3>仓库配置</h3>
+                        <div class="form-group">
+                            <label>主仓库 (owner/repo)</label>
+                            <input type="text" id="main-repo" placeholder="username/main-repo">
+                        </div>
+                        <div class="form-group">
+                            <label>分享仓库 (owner/repo)</label>
+                            <input type="text" id="share-repo" placeholder="username/Every-day-Share">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveRepoConfig()">保存配置</button>
+                    </div>
+                </div>
+
+                <!-- 文件管理 -->
+                <div id="admin-page-files" class="admin-page">
+                    <div class="file-manager" id="file-manager"></div>
+                </div>
+
+                <!-- 分享仓库文件 -->
+                <div id="admin-page-share-files" class="admin-page">
+                    <div class="file-manager" id="share-file-manager"></div>
+                </div>
+
+                <!-- Issue 管理 -->
+                <div id="admin-page-issues" class="admin-page">
+                    <div id="issues-container"></div>
+                </div>
+
+                <!-- 用户权限 -->
+                <div id="admin-page-users" class="admin-page">
+                    <div class="card">
+                        <input type="text" id="user-search" placeholder="搜索用户名..." oninput="loadUsers()">
+                    </div>
+                    <div id="users-table"></div>
+                </div>
+
+                <!-- 套餐管理 -->
+                <div id="admin-page-packages" class="admin-page">
+                    <div class="tabs">
+                        <button class="tab active" onclick="switchPackageTab('vip')">会员套餐</button>
+                        <button class="tab" onclick="switchPackageTab('points')">秒点包</button>
+                    </div>
+                    <div id="packages-content"></div>
+                </div>
+
+                <!-- 优惠券 -->
+                <div id="admin-page-coupons" class="admin-page">
+                    <button class="btn btn-primary" onclick="showCouponForm()"><i class="fas fa-plus"></i> 新建优惠券</button>
+                    <div id="coupons-table"></div>
+                </div>
+
+                <!-- 订单审批 -->
+                <div id="admin-page-approvals" class="admin-page">
+                    <div id="approvals-table"></div>
+                </div>
+
+                <!-- 订单记录 -->
+                <div id="admin-page-orders" class="admin-page">
+                    <div id="orders-record-table"></div>
+                </div>
+
+                <!-- 用户额度 -->
+                <div id="admin-page-quotas" class="admin-page">
+                    <div id="quotas-table"></div>
+                </div>
+
+                <!-- 退款审批 -->
+                <div id="admin-page-refunds" class="admin-page">
+                    <div id="refunds-table"></div>
+                </div>
+
+                <!-- 公告管理 -->
+                <div id="admin-page-announcements" class="admin-page">
+                    <button class="btn btn-primary" onclick="showAnnouncementForm()"><i class="fas fa-plus"></i> 新建公告</button>
+                    <div id="announcements-table"></div>
+                </div>
+
+                <!-- 流量统计 -->
+                <div id="admin-page-traffic" class="admin-page">
+                    <div id="traffic-table"></div>
+                </div>
+
+                <!-- 访问统计 -->
+                <div id="admin-page-visitors" class="admin-page">
+                    <div id="visitors-stats"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 弹窗容器 -->
+    <div id="admin-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <button class="modal-close" onclick="closeAdminModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="assets/config.js"></script>
+    <script src="assets/init.js"></script>
+    <script src="assets/storage.js"></script>
+    <script src="assets/github-api.js"></script>
+    <script src="assets/admin.js"></script>
+</body>
+</html>
